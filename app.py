@@ -1,17 +1,13 @@
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-from flask_script import Manager
-from flask_migrate import Migrate, MigrateCommand
-
+import pdb
+import os
 
 app = Flask(__name__)
-app.config['SQLAlCHEMY_DATABASE_URI'] = 'postgresql:///flask_blog_dev' 
+app.config.from_object(os.environ['APP_SETTINGS'])
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
-migrate = Migrate(app, db)
-
-manager = Manager(app)
-manager.add_command('db', MigrateCommand)
 
 class User(db.Model):
   id = db.Column(db.Integer, primary_key=True)
